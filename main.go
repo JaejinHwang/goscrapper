@@ -1,5 +1,12 @@
 package main
 
+import (
+	"fmt"
+
+	"github.com/JaejinHwang/goscrapper/accounts"
+)
+
 func main() {
-	println("한글도 dpfpfp 나오나?")
+	account := accounts.CreateAccount("Jay")
+	fmt.Println(account)
 }
