@@ -16,4 +16,6 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println(account.CheckBalance())
+	account.ChangeOwner("Hwang")
+	fmt.Println(account.CheckOwner())
 }
