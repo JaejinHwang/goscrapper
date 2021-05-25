@@ -21,14 +21,21 @@ func main() {
 	// account.ChangeOwner("Hwang")
 	// fmt.Println(account.CheckOwner())
 
-	// Code about commit #1.4
+	// Code about commit #1.4 ~ #1.5
 
-	dictionary := dictionarys.Dictionary{"first": "first word"}
-	definition, error := dictionary.Search("first")
-	if error != nil {
-		fmt.Println(error)
-	} else {
-		fmt.Println(definition)
+	dictionary := dictionarys.Dictionary{}
+	exword := "hello"
+	dictionary.Add(exword, "greeting")
+	result := dictionary.Update("xdd", "first")
+	if result != nil {
+		fmt.Println(result)
 	}
-
-}
+	word, _ := dictionary.Search(exword)
+	fmt.Println(word)
+	fmt.Println(dictionary)
+	result2 := dictionary.Delete("second")
+	if result2 != nil {
+		fmt.Println(result2)
+	}
+	fmt.Println(dictionary)
+	}
