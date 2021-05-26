@@ -10,6 +10,11 @@ var (
 	errRequestFailed = errors.New("request failed")
 )
 
+type requestResult struct {
+	url string
+	status string
+}
+
 func main() {
 	// Code about commit #1.1 ~ #1.3
 
@@ -44,7 +49,11 @@ func main() {
 	// fmt.Println(dictionary)
 	// }
 
-	var results = make(map[string]string)
+
+	// Code about commit #2.1 ~ #2.2
+	
+	results := make(map[string]string)
+	c := make(chan requestResult)
 
 	urls := [] string {
 		"https://www.google.com/",
@@ -56,24 +65,25 @@ func main() {
 	}
 
 	for _, url := range urls {
-		result := "OK"
-		err := hitURL(url)
-		if err != nil{
-			result = "FAILED"
-		}
-		results[url] = result
+		go hitURL(url, c)
 	}
-	for url, result := range results {
-		fmt.Println(url, result)
+
+	for i:=0; i<len(urls); i++ {
+		result := <-c
+		results[result.url] = result.status
+	}
+
+	for url, status := range results {
+		fmt.Println(url, status)
 	}
 }
 
-func hitURL (url string) error {
-	fmt.Println("Checking: ", url)
+func hitURL (url string, c chan<- requestResult) {
+	// fmt.Println("Checking: ", url)
 	resp, err := http.Get(url)
 	if err != nil || resp.StatusCode >= 400 {
-		fmt.Println(err, resp.StatusCode)
-		return errRequestFailed
+		c <- requestResult{url: url, status: "FAILED"}
+	} else {
+		c <- requestResult{url: url, status: "OK"}
 	}
-	return nil
 }
